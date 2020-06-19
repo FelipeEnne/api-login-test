@@ -1,15 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './components/App';
-import store from './reducers/index';
+import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+import { store } from './reducers/index';
+import { App } from './App';
 
+// setup fake backend
+import { configureFakeBackend } from './helper/fake-backend';
+configureFakeBackend();
+
+render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('app')
+);

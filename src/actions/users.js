@@ -18,7 +18,7 @@ import { userService } from '../services/user';
 import { alertActions } from './alert';
 import { createBrowserHistory } from 'history';
 
-export const history = createBrowserHistory();
+const history = createBrowserHistory();
 
 function login(username, password) {
     return dispatch => {
