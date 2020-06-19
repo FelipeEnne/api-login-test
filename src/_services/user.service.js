@@ -1,14 +1,14 @@
-export function authHeader() {
-    // return authorization header with jwt token
-    let user = JSON.parse(localStorage.getItem('user'));
+import { authHeader } from '../_helpers';
 
-    if (user && user.token) {
-        return { 'Authorization': 'Bearer ' + user.token };
-    } else {
-        return {};
-    }
-}
-
+export const userService = {
+    login,
+    logout,
+    register,
+    getAll,
+    getById,
+    update,
+    delete: _delete
+};
 
 function login(username, password) {
     const requestOptions = {
@@ -87,7 +87,7 @@ function handleResponse(response) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
                 logout();
-                location.reload(true);
+                window.location.reload(true);
             }
 
             const error = (data && data.message) || response.statusText;
@@ -97,14 +97,3 @@ function handleResponse(response) {
         return data;
     });
 }
-
-
-export const userService = {
-    login,
-    logout,
-    register,
-    getAll,
-    getById,
-    update,
-    delete: _delete
-};

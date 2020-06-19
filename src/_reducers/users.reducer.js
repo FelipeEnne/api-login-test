@@ -1,27 +1,20 @@
-import {
-    GETALL_REQUEST,
-    GETALL_SUCCESS,
-    GETALL_FAILURE,
-    DELETE_REQUEST,
-    DELETE_SUCCESS,
-    DELETE_FAILURE,
-} from '../helper/constant';
+import { userConstants } from '../_constants';
 
 export function users(state = {}, action) {
   switch (action.type) {
-    case GETALL_REQUEST:
+    case userConstants.GETALL_REQUEST:
       return {
         loading: true
       };
-    case GETALL_SUCCESS:
+    case userConstants.GETALL_SUCCESS:
       return {
         items: action.users
       };
-    case GETALL_FAILURE:
+    case userConstants.GETALL_FAILURE:
       return { 
         error: action.error
       };
-    case DELETE_REQUEST:
+    case userConstants.DELETE_REQUEST:
       // add 'deleting:true' property to user being deleted
       return {
         ...state,
@@ -31,12 +24,12 @@ export function users(state = {}, action) {
             : user
         )
       };
-    case DELETE_SUCCESS:
+    case userConstants.DELETE_SUCCESS:
       // remove deleted user from state
       return {
         items: state.items.filter(user => user.id !== action.id)
       };
-    case DELETE_FAILURE:
+    case userConstants.DELETE_FAILURE:
       // remove 'deleting:true' property and add 'deleteError:[error]' property to user 
       return {
         ...state,
