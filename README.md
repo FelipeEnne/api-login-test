@@ -1,68 +1,85 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+# Login React
 
-## Available Scripts
+Aplicação de demonstração de autenticação em React com Redux, roteamento protegido e uma API simulada no navegador.
 
-In the project directory, you can run:
+## Funcionalidades
 
-### `yarn start`
+- Login e registro de usuários
+- Rotas protegidas (acesso à home apenas autenticado)
+- Listagem e exclusão de usuários cadastrados
+- Sessão persistida via token e `localStorage`
+- Senhas armazenadas com hash SHA-256 no backend simulado
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Tecnologias
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+- [React](https://react.dev/) 18
+- [Redux](https://redux.js.org/) + [Redux Toolkit](https://redux-toolkit.js.org/)
+- [React Router](https://reactrouter.com/) v5
+- [Vite](https://vitejs.dev/) 6
 
-### `yarn test`
+## Pré-requisitos
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [Node.js](https://nodejs.org/) (versão LTS recomendada)
 
-### `yarn build`
+## Instalação
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm install
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Scripts disponíveis
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `npm start`
 
-### `yarn eject`
+Inicia o servidor de desenvolvimento em [http://localhost:3000](http://localhost:3000). A página recarrega automaticamente ao editar os arquivos.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### `npm run build`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Gera a versão de produção na pasta `build/`.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### `npm run serve`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Serve localmente o build de produção para validação antes do deploy.
 
-## Learn More
+## Como usar
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Execute `npm start`.
+2. Acesse `/register` para criar uma conta.
+3. Faça login em `/login`.
+4. Na home (`/`), visualize e exclua usuários cadastrados.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Os dados ficam no `localStorage` do navegador (`users` e `tokens`). Para recomeçar do zero, limpe o armazenamento local do site.
 
-### Code Splitting
+## Estrutura do projeto
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+```
+src/
+├── App/              # Componente raiz e rotas
+├── HomePage/         # Página autenticada (lista de usuários)
+├── LoginPage/        # Formulário de login
+├── RegisterPage/     # Formulário de cadastro
+├── _actions/         # Action creators do Redux
+├── _components/      # Componentes compartilhados (ex.: PrivateRoute)
+├── _constants/       # Constantes das actions
+├── _helpers/         # Store, history, auth-header e fake backend
+├── _reducers/        # Reducers do Redux
+└── _services/        # Chamadas HTTP à API simulada
+```
 
-### Analyzing the Bundle Size
+## API simulada
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+O arquivo `src/_helpers/fake-backend.js` intercepta chamadas `fetch` e simula um backend REST com delay de 500 ms. Endpoints disponíveis:
 
-### Making a Progressive Web App
+| Método | Endpoint               | Descrição                          | Autenticação |
+|--------|------------------------|------------------------------------|--------------|
+| POST   | `/users/authenticate`  | Login (retorna token de sessão)    | Não          |
+| POST   | `/users/register`      | Cadastro de novo usuário           | Não          |
+| GET    | `/users`               | Lista todos os usuários            | Bearer token |
+| GET    | `/users/:id`           | Busca usuário por ID               | Bearer token |
+| DELETE | `/users/:id`           | Remove usuário                     | Bearer token |
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+O token é enviado no header `Authorization: Bearer <token>` após o login.
 
-### Advanced Configuration
+## Licença
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Projeto privado para fins de estudo e testes.
