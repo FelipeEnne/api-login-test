@@ -24,12 +24,14 @@ function generateToken() {
 
 // resolve the userId associated with the bearer token in the request headers
 function authenticatedUserId(opts) {
+    tokens = JSON.parse(localStorage.getItem('tokens')) || {};
     const header = opts.headers && opts.headers.Authorization;
     if (!header || !header.startsWith('Bearer ')) {
         return null;
     }
     const token = header.slice('Bearer '.length);
-    return Object.prototype.hasOwnProperty.call(tokens, token) ? tokens[token] : null;
+    const userId = Object.prototype.hasOwnProperty.call(tokens, token) ? tokens[token] : null;
+    return users.some(user => user.id === userId) ? userId : null;
 }
 
 // strip sensitive fields (e.g. password hash) before returning a user to the client
@@ -63,6 +65,7 @@ export function configureFakeBackend() {
                         // if login details are valid return user details and a fresh session token
                         let user = filteredUsers[0];
                         let token = generateToken();
+                        tokens = JSON.parse(localStorage.getItem('tokens')) || {};
                         tokens[token] = user.id;
                         localStorage.setItem('tokens', JSON.stringify(tokens));
 
@@ -151,6 +154,10 @@ export function configureFakeBackend() {
                             if (user.id === id) {
                                 // delete user
                                 users.splice(i, 1);
+                                for (const token of Object.keys(tokens)) {
+                                    if (tokens[token] === id) delete tokens[token];
+                                }
+                                localStorage.setItem('tokens', JSON.stringify(tokens));
                                 localStorage.setItem('users', JSON.stringify(users));
                                 break;
                             }

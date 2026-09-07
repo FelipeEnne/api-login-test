@@ -2,6 +2,10 @@
 
 Aplicação de demonstração de autenticação em React com Redux, roteamento protegido e uma API simulada no navegador.
 
+Esta demonstração não oferece uma barreira de segurança para uso em produção: usuários, hashes e sessões podem ser alterados pelo próprio navegador. Use apenas dados fictícios. Para autenticação real, a validação de credenciais, as permissões e o armazenamento de sessões devem estar em um servidor; SHA-256 simples não é adequado para armazenar senhas reais.
+
+O logout revoga o token da sessão atual. A exclusão de uma conta revoga todos os seus tokens. Actions de cadastro não contêm senhas, e o logger de estado foi removido para evitar exposição de credenciais no console.
+
 ## Funcionalidades
 
 - Login e registro de usuários
@@ -28,6 +32,10 @@ npm install
 ```
 
 ## Scripts disponíveis
+
+### `npm test`
+
+Executa os testes de regressão de revogação de sessões (Node.js 22 ou superior).
 
 ### `npm start`
 

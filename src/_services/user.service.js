@@ -28,6 +28,12 @@ function login(username, password) {
 }
 
 function logout() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const tokens = JSON.parse(localStorage.getItem('tokens')) || {};
+    if (user && user.token) {
+        delete tokens[user.token];
+        localStorage.setItem('tokens', JSON.stringify(tokens));
+    }
     // remove user from local storage to log user out
     localStorage.removeItem('user');
 }
